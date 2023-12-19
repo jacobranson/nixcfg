@@ -99,8 +99,8 @@ in {
   # enable just command runner
   nixcfg.features.just.enable = true;
 
-  # enables GPU-passthrough virtualization via KVM, QEMU, Looking Glass
-  nixcfg.features.virtualization = {
+  # enables GPU-passthrough virtualisation via KVM, QEMU, Looking Glass
+  nixcfg.features.virtualisation = {
     enable = true;
     user = user;
     vfioIds = [ "1002:1681" ];
