@@ -1,12 +1,12 @@
 { config, lib, pkgs, ... }:
 
 with lib;
-with lib.alaska;
+with lib.nixcfg;
 
 let
-  cfg = config.alaska.features.just;
+  cfg = config.nixcfg.features.just;
 in {
-  options.alaska.features.just = with types; {
+  options.nixcfg.features.just = with types; {
     enable = mkBoolOpt' false;
   };
 
