@@ -79,6 +79,9 @@ in {
   # enable firefox web browser
   nixcfg.apps.firefox.enable = true;
 
+  # enable steam for games
+  nixcfg.apps.steam.enable = true;
+
   # enable printer support
   services.printing.enable = true;
 
@@ -135,6 +138,7 @@ in {
         "Public"
         "Templates"
         "Videos"
+        "Steam"
         { directory = ".ssh"; mode = "0700"; }
         ".config/nixcfg"
         ".config/gh"
