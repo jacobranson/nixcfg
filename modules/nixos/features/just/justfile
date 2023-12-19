@@ -1,0 +1,110 @@
+_default:
+  @just --justfile /etc/justfile --list --unsorted
+
+# Shows all available NixOS generations.
+show-generations:
+  #!/usr/bin/env bash
+  set -euo pipefail
+  IFS=$'\n\t'
+
+  sudo nix-env --list-generations --profile /nix/var/nix/profiles/system
+
+# Switches to the latest NixOS generation.
+switch-generation:
+  #!/usr/bin/env bash
+  set -euo pipefail
+  IFS=$'\n\t'
+
+  sudo nixos-rebuild switch --flake "$NIXCFG_DIR"
+
+# Updates the NixOS flake.lock file and switches to the latest NixOS generation.
+update-generation:
+  #!/usr/bin/env bash
+  set -euo pipefail
+  IFS=$'\n\t'
+
+  nix flake update --commit-lock-file
+  sudo nixos-rebuild switch --flake "$NIXCFG_DIR"
+
+# Removes the NixOS generations matching the provided target. (Ex: 29, 5d, old)
+remove-generations target:
+  #!/usr/bin/env bash
+  set -euo pipefail
+  IFS=$'\n\t'
+
+  # if target is "old", delete all generations except the current one
+  if [[ "{{target}}" == "old" ]]; then
+    sudo /run/current-system/sw/bin/nix-collect-garbage --delete-old
+
+  # if target otherwise ends with "d", delete by period
+  elif [[ "{{target}}" == *d ]]; then
+    sudo /run/current-system/sw/bin/nix-collect-garbage --delete-older-than "{{target}}"
+
+  # if target is a number, delete by generation number
+  elif [[ "{{target}}" =~ ^[0-9]+$ ]]; then
+    sudo nix-env --delete-generations --profile /nix/var/nix/profiles/system "{{target}}"
+
+  # if target is anything else, fail with an error message.
+  else
+    >&2 echo "Invalid target specified"
+    exit 1
+  fi
+
+  # cleanup old boot loader entries
+  sudo /run/current-system/bin/switch-to-configuration switch
+
+# Reboots the system immediately.
+reboot-system:
+  #!/usr/bin/env bash
+  set -euo pipefail
+  IFS=$'\n\t'
+
+  sudo reboot now
+
+# Shows all IOMMU devices.
+show-iommu:
+  #! /usr/bin/env bash
+  set -euo pipefail
+  IFS=$'\n\t'
+
+  shopt -s nullglob
+  for d in /sys/kernel/iommu_groups/*/devices/*; do
+      n=${d#*/iommu_groups/*}; n=${n%%/*}
+      printf 'IOMMU Group %s ' "$n"
+      lspci -nns "${d##*/}"
+  done | "$PAGER";
+
+# Shows all fonts currently installed.
+show-fonts:
+  #!/usr/bin/env bash
+  set -euo pipefail
+  IFS=$'\n\t'
+
+  fc-list : family | sort | uniq | "$PAGER"
+
+# Shows all .desktop files from installed Nix and Flatpak apps.
+show-desktop-files:
+  #!/usr/bin/env bash
+  set -euo pipefail
+  IFS=$'\n\t'
+
+  sudo ls -A1 2> /dev/null \
+    /run/current-system/sw/share/applications/*.desktop \
+    /var/lib/flatpak/app/*/current/active/files/share/applications/*.desktop \
+  | while read path; do basename "$path"; done | "$PAGER" || true
+
+# Shows all GNOME extensions currently installed.
+show-gnome-extensions:
+  #!/usr/bin/env bash
+  set -euo pipefail
+  IFS=$'\n\t'
+
+  gnome-extensions list | "$PAGER"
+
+# Watch for changes made to the dconf database.
+watch-dconf:
+  #!/usr/bin/env bash
+  set -euo pipefail
+  IFS=$'\n\t'
+
+  dconf watch /

@@ -85,6 +85,11 @@ in {
   # disable sudo password prompts
   security.sudo.wheelNeedsPassword = false;
 
+  # set environmet variables
+  environment.variables = {
+    NIXCFG_DIR = "/home/jacob/.config/nixcfg";
+  };
+
   # add additional system packages to install
   environment.systemPackages = with pkgs; [];
 
