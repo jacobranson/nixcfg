@@ -100,7 +100,7 @@ in {
   nixcfg.features.just.enable = true;
 
   # enables GPU-passthrough virtualization via KVM, QEMU, Looking Glass
-  alaska.features.virtualization = {
+  nixcfg.features.virtualization = {
     enable = true;
     user = user;
     vfioIds = [ "1002:1681" ];
