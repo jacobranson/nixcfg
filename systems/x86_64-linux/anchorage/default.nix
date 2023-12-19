@@ -49,13 +49,10 @@ in {
   time.timeZone = timezone;
 
   # enable the GNOME desktop environment
-  services.xserver = {
-    enable = true;
-    libinput.enable = true;
-    desktopManager.gnome.enable = true;
-    displayManager.gdm.enable = true;
-    displayManager.autoLogin.user = user;
-  };
+  nixcfg.desktops.gnome.enable = true;
+
+  # enable autologin
+  services.xserver.displayManager.autoLogin.user = user;
 
   # enable audio via pipewire
   sound.enable = false;
@@ -85,10 +82,13 @@ in {
   # disable sudo password prompts
   security.sudo.wheelNeedsPassword = false;
 
-  # set environmet variables
+  # set environment variables
   environment.variables = {
     NIXCFG_DIR = "/home/jacob/.config/nixcfg";
   };
+
+  # enable just command runner
+  nixcfg.features.just.enable = true;
 
   # add additional system packages to install
   environment.systemPackages = with pkgs; [];
