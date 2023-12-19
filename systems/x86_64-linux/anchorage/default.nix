@@ -76,6 +76,9 @@ in {
     ];
   };
 
+  # enable firefox web browser
+  nixcfg.apps.firefox.enable = true;
+
   # enable printer support
   services.printing.enable = true;
 
@@ -135,6 +138,7 @@ in {
         { directory = ".ssh"; mode = "0700"; }
         ".config/nixcfg"
         ".config/gh"
+        ".mozilla"
       ];
       files = [
         ".bash_history"
