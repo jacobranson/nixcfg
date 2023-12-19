@@ -99,6 +99,13 @@ in {
   # enable just command runner
   nixcfg.features.just.enable = true;
 
+  # enables GPU-passthrough virtualization via KVM, QEMU, Looking Glass
+  alaska.features.virtualization = {
+    enable = true;
+    user = user;
+    vfioIds = [ "1002:1681" ];
+  };
+
   # add additional system packages to install
   environment.systemPackages = with pkgs; [];
 
@@ -125,6 +132,7 @@ in {
       "/var/log"
       "/var/lib/bluetooth"
       "/var/lib/flatpak"
+      "/var/lib/libvirt"
       "/var/lib/nixos"
       "/var/lib/systemd/coredump"
       "/etc/NetworkManager/system-connections"
@@ -144,8 +152,10 @@ in {
         "Videos"
         "Steam"
         { directory = ".ssh"; mode = "0700"; }
+        ".config/libvirt"
         ".config/nixcfg"
         ".config/gh"
+        ".local/share/libvirt"
         ".mozilla"
         ".var"
       ];
