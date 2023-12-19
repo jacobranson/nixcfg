@@ -76,6 +76,9 @@ in {
     ];
   };
 
+  # enable flatpak
+  nixcfg.features.flatpak.enable = true;
+
   # enable firefox web browser
   nixcfg.apps.firefox.enable = true;
 
@@ -121,6 +124,7 @@ in {
     directories = [
       "/var/log"
       "/var/lib/bluetooth"
+      "/var/lib/flatpak"
       "/var/lib/nixos"
       "/var/lib/systemd/coredump"
       "/etc/NetworkManager/system-connections"
@@ -143,6 +147,7 @@ in {
         ".config/nixcfg"
         ".config/gh"
         ".mozilla"
+        ".var"
       ];
       files = [
         ".bash_history"
