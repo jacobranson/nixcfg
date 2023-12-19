@@ -15,12 +15,31 @@ in {
     ./disk-configuration.nix
   ];
 
-  # linux kernel version to use
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot = {
+    # linux kernel version to use
+    kernelPackages = pkgs.linuxPackages_latest;
 
-  # ensure the system can boot
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+    # set the bootloader to systemd-boot
+    loader.systemd-boot.enable = true;
+    loader.efi.canTouchEfiVariables = true;
+
+    # hides boot logs behind a loading screen
+    initrd.systemd.enable = true;
+    plymouth.enable = true;
+
+    # TODO supposed to scale the password screen, but doesn't work
+    plymouth.extraConfig = "DeviceScale=2";
+    
+    # hacky way to make the system boot without showing logs.
+    # can be overridden by pressing "Escape".
+    kernelParams = [ "quiet" ];
+    initrd.verbose = false;
+    consoleLogLevel = 0;
+
+    # hide the nixos generation boot selection menu by default.
+    # can be overridden by holding "Space".
+    loader.timeout = 0;
+  };
 
   # ensure the system can connect to the internet
   networking.hostName = hostname;
