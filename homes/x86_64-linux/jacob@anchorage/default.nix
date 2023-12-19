@@ -12,8 +12,9 @@
 
     lfs.enable = true;
     delta.enable = true;
-    gitui.enable = true;
   };
+
+  programs.gitui.enable = true;
 
   nixcfg.programs.helix.enable = true;
 
