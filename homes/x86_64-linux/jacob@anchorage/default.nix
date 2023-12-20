@@ -3,7 +3,7 @@
 {
   home.username = "jacob";
   home.homeDirectory = "/home/jacob";
-  home.stateVersion = "23.11";
+
   programs.git = {
     enable = true;
     userName = "Jacob Ranson";
@@ -16,9 +16,9 @@
 
   programs.gitui.enable = true;
 
-  nixcfg.programs.helix.enable = true;
-
   programs.gh.enable = true;
+
+  nixcfg.programs.helix.enable = true;
 
   home.packages = with pkgs; [
     devbox
@@ -29,4 +29,14 @@
     EDITOR = "hx";
     PAGER = "moar";
   };
+
+  # This value determines the Home Manager release that your
+  # configuration is compatible with. This helps avoid breakage
+  # when a new Home Manager release introduces backwards
+  # incompatible changes.
+  #
+  # You can update Home Manager without changing this value. See
+  # the Home Manager release notes for a list of state version
+  # changes in each release.
+  home.stateVersion = "23.11";
 }
