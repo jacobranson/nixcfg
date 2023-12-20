@@ -23,5 +23,10 @@ in {
           https://flathub.org/repo/flathub.flatpakrepo
       '';
     };
+
+    nixcfg.features.persistence = {
+      directories = [ "/var/lib/flatpak" ];
+      userDirectories = [ ".var" ];
+    };
   };
 }

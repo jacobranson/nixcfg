@@ -8,6 +8,7 @@ let
 in {
   options.nixcfg.desktops.gnome = with types; {
     enable = mkBoolOpt' false;
+    user   = mkStrOpt'  null;
   };
 
   config = mkIf cfg.enable {
@@ -54,7 +55,11 @@ in {
     programs.dconf = (import ./dconf.nix { inherit lib; } );
 
     systemd.tmpfiles.rules = [
-      "C+ /run/gdm/.config/monitors.xml 644 gdm gdm - /persist/home/jacob/.config/monitors.xml"
+      "C+ /run/gdm/.config/monitors.xml 644 gdm gdm - /persist/home/${cfg.user}/.config/monitors.xml"
+    ];
+
+    nixcfg.features.persistence.userFiles = [
+      ".config/monitors.xml"
     ];
   };
 }

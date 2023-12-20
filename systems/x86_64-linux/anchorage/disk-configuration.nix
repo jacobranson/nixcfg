@@ -6,6 +6,11 @@ let
   swap-size = "8G";
 in {
   fileSystems."/persist".neededForBoot = true;
+
+  # services.udev.extraRules = ''
+  #   ENV{ID_VENDOR_ID}=="046d", ENV{ID_MODEL_ID}=="0825", ENV{PULSE_IGNORE}="1"
+  #   KERNEL=="nvme0n1p5", ENV{UDISKS_IGNORE}="1"
+  # '';
   
   disko.devices = {
     nodev."/" = {

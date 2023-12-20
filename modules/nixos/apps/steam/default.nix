@@ -17,5 +17,7 @@ in {
       ln -sfn ~/Steam/.local/share/Steam/ ~/.local/share/Steam
       ln -sfn ~/Steam/.steam ~/.steam
     '';
+
+    nixcfg.features.persistence.userDirectories = [ "Steam" ];
   };
 }

@@ -53,5 +53,15 @@ in {
     };
 
     users.users.${cfg.user}.extraGroups = [ "qemu-libvirtd" "libvirtd" "disk" ];
+
+    nixcfg.features.persistence = {
+      directories = [
+        "/var/lib/libvirt"
+      ];
+      userDirectories = [
+        ".config/libvirt"
+        ".local/share/libvirt"
+      ];
+    };
   };
 }
