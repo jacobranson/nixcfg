@@ -52,5 +52,9 @@ in {
     xdg.portal.xdgOpenUsePortal = true;
 
     programs.dconf = (import ./dconf.nix { inherit lib; } );
+
+    systemd.tmpfiles.rules = [
+      "C+ /run/gdm/.config/monitors.xml 644 gdm gdm - /persist/home/jacob/.config/monitors.xml"
+    ];
   };
 }
